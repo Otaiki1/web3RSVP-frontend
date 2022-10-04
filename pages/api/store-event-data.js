@@ -37,3 +37,7 @@ async function makeFileObjects(body){
     files.push(new File([buffer], "data.json"));
     return files
 }
+//web3 storage client to intercact with
+function makeStorageClient(){
+    return new Web3Storage({token: process.env.WEB3STORAGE_TOKEN});
+}
