@@ -41,3 +41,9 @@ async function makeFileObjects(body){
 function makeStorageClient(){
     return new Web3Storage({token: process.env.WEB3STORAGE_TOKEN});
 }
+//store files using the client.put 
+async function storeFiles(files){
+    const client = makeStorageClient();
+    const cid = await client.put(files)
+    return cid;
+}
