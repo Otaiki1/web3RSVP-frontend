@@ -27,3 +27,13 @@ async function storeEventData(req, res){
             .json({error: "Error Creating event", success: false});
     }
 }
+//make file object would create a buffer
+async function makeFileObjects(body){
+    const buffer = Buffer.from(JSON.stringify(body));
+
+    const imageDirectory = resolve(process.cwd(), `public/images/${body.image}`);
+    const files = await getFilesFromPath(imageDirectory);
+
+    files.push(new File([buffer], "data.json"));
+    return files
+}
