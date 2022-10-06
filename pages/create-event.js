@@ -8,7 +8,7 @@ import { ethers } from "ethers";
 import connectContract from "../utils/connectContract";
 
 //otehr imports
-import { connectButton } from "@rainbow-me/rainbowkit";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import Alert from "../components/Alert";
 
