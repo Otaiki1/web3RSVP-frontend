@@ -7,6 +7,11 @@ import getRandomImage from "../utils/getRandomImage";
 import { ethers } from "ethers";
 import connectContract from "../utils/connectContract";
 
+//otehr imports
+import { connectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
+import Alert from "../components/Alert";
+
 export default function CreateEvent() {
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
@@ -15,6 +20,17 @@ export default function CreateEvent() {
   const [refund, setRefund] = useState("");
   const [eventLink, setEventLink] = useState("");
   const [eventDescription, setEventDescription] = useState("");
+
+
+  //Rounding up the create Event page 
+  const{ data: account } = useAccount();
+
+  const [success, setSuccess] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(null);
+  const [eventID, setEventID] = useState(null);
+
+
 
   //function taht calls on contract functions 
   const createEvent = async(cid) => {
@@ -34,15 +50,29 @@ export default function CreateEvent() {
           { gasLimit: 900000 }
         );
 
+        setLoading(true)
+
         console.log("Minting... ", txn.hash);
+        let wait = await txn.wait();
         console.log("Minted", txn.hash);
+
+        setEventID(wait.events[0].args[0]);
+
+        setSuccess(true);
+        setLoading(false);
+        setMessage("Your event has been created successfully!")
 
       }else {
         console.log("Error getting Contract!");
       }
 
   }catch(error){
-    console.log(error);
+
+      setSuccess(false);
+      setMessage(`There was an error creating your event: ${error.message}`);
+      setLoading(false);
+      console.log(error);
+      
   }
 
   }
