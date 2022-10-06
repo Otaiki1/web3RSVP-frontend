@@ -5,6 +5,7 @@ import Link from "next/link";
 //import neccessary stuff
 import getRandomImage from "../utils/getRandomImage";
 import { ethers } from "ethers";
+import connectContract from "../utils/connectContract";
 
 export default function CreateEvent() {
   const [eventName, setEventName] = useState("");
@@ -15,6 +16,36 @@ export default function CreateEvent() {
   const [eventLink, setEventLink] = useState("");
   const [eventDescription, setEventDescription] = useState("");
 
+  //function taht calls on contract functions 
+  const createEvent = async(cid) => {
+    try{
+      const rsvpContract  = connectContract();
+      if (rsvpContract){
+        let deposit = ethers.utils.parseEther(refund);
+        let eventDateAndTime = new Date(`${eventDate} ${eventTime}`);
+        let eventTimeStamp = eventDateAndTime.getTime();
+        let eventDataCID  = cid;
+
+        const txn  = await rsvpContract.createNewEvent(
+          eventTimeStamp,
+          deposit,
+          maxCapacity,
+          eventDataCID,
+          { gasLimit: 900000 }
+        );
+
+        console.log("Minting... ", txn.hash);
+        console.log("Minted", txn.hash);
+
+      }else {
+        console.log("Error getting Contract!");
+      }
+
+  }catch(error){
+    console.log(error);
+  }
+
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -255,3 +286,5 @@ export default function CreateEvent() {
     </div>
   );
 }
+
+
