@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 
+//import neccessary stuff
+import getRandomImage from "../utils/getRandomImage";
+import { ethers } from "ethers";
+
 export default function CreateEvent() {
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
@@ -14,7 +18,32 @@ export default function CreateEvent() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("Form submitted")
+    // console.log("Form submitted")
+    //collect user input  that would be uploaded into ipfs into an object
+    const body = {
+      name: eventName,
+      description: eventDescription,
+      link: eventLink,
+      image: getRandomImage(),
+    }
+    //send the request to our api endpoint so we can retreive a CID
+    try{
+      const response = await fetch("/api/store-event-data", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+      });
+      if(response.status != 200){
+        alert("Oops Something went very wrong !");
+      } else{
+        console.log("Form Submitted Successfully !");
+        let responseJSON  = await response.JSON();
+        await createEvent(responseJSON.cid);
+      }
+      //check response , if success is false , dont take them to success page
+    } catch(err){
+        alert(`Oops!, something went very wrong ${err}`)
+    }
   }
 
   
