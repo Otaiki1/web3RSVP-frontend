@@ -118,7 +118,7 @@ export default function CreateEvent() {
     });
   });
 
-  return (
+  return(
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <Head>
         <title>Create your event | web3rsvp</title>
@@ -128,12 +128,36 @@ export default function CreateEvent() {
         />
       </Head>
       <section className="relative py-12">
-    
+        {loading && (
+          <Alert
+            alertType={"loading"}
+            alertBody={"Please wait"}
+            triggerAlert={true}
+            color={"white"}
+          />
+        )}
+        {success && (
+          <Alert
+            alertType={"success"}
+            alertBody={message}
+            triggerAlert={true}
+            color={"palegreen"}
+          />
+        )}
+        {success === false && (
+          <Alert
+            alertType={"failed"}
+            alertBody={message}
+            triggerAlert={true}
+            color={"palevioletred"}
+          />
+        )}
+        {!success && (
           <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl mb-4">
             Create your virtual event
           </h1>
-        
-     
+        )}
+        {account && !success && (
           <form
             onSubmit={handleSubmit}
             className="space-y-8 divide-y divide-gray-200"
@@ -306,12 +330,21 @@ export default function CreateEvent() {
               </div>
             </div>
           </form>
-        
-
-          {/* <section className="flex flex-col items-start py-8">
+        )}
+        {success && eventID && (
+          <div>
+            Success! Please wait a few minutes, then check out your event page{" "}
+            <span className="font-bold">
+              <Link href={`/event/${eventID}`}>here</Link>
+            </span>
+          </div>
+        )}
+        {!account && (
+          <section className="flex flex-col items-start py-8">
             <p className="mb-4">Please connect your wallet to create events.</p>
-          </section> */}
-
+            <ConnectButton />
+          </section>
+        )}
       </section>
     </div>
   );
