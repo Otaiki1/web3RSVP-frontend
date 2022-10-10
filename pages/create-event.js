@@ -94,11 +94,12 @@ export default function CreateEvent() {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body),
       });
+      console.log("response is ___---___", response)
       if(response.status != 200){
         alert("Oops Something went very wrong !");
       } else{
         console.log("Form Submitted Successfully !");
-        let responseJSON  = await response.JSON();
+        let responseJSON  = await response.json();
         await createEvent(responseJSON.cid);
       }
       //check response , if success is false , dont take them to success page
