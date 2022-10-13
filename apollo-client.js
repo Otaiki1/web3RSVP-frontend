@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-    uri: "https://api.thegraph.com/subgraphs/name/Otaiki1/web3rsvp",
+    uri: "https://api.thegraph.com/subgraphs/name/otaiki1/web3rsvp",
     cache: new InMemoryCache(),
 });
 
